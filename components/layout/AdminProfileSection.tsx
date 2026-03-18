@@ -1,8 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { LogOut, UserCircle2 } from "lucide-react";
+import Link from "next/link";
+import { ChevronDown, LogOut, User } from "lucide-react";
 import api from "@/lib/axios";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 type MeResponse = {
   username?: string;
@@ -41,26 +50,45 @@ export function AdminProfileSection() {
   };
 
   const roleLabel = (me?.role || "admin").toUpperCase();
+  const username = loading ? "Admin" : me?.username || "Admin";
+  const initials = username.trim().slice(0, 1).toUpperCase() || "A";
 
   return (
-    <div className="flex items-center gap-2 rounded-lg border border-zinc-700 bg-zinc-900 px-3 py-2">
-      <UserCircle2 className="h-4 w-4 text-zinc-400" />
-      <div className="min-w-0">
-        <p className="truncate text-xs font-medium text-zinc-200">
-          {loading ? "Loading..." : me?.username || "Admin"}
-        </p>
-        <p className="truncate text-[11px] text-zinc-500">{roleLabel}</p>
-      </div>
-      <button
-        type="button"
-        onClick={handleLogout}
-        className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs text-zinc-300 hover:bg-zinc-800 hover:text-white"
-        title="Logout"
-      >
-        <LogOut className="h-3.5 w-3.5" />
-        Logout
-      </button>
-    </div>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button
+          type="button"
+          className="inline-flex items-center gap-2 rounded-full border border-zinc-700 bg-zinc-900 px-1 py-1 pr-2 text-zinc-200 hover:bg-zinc-800"
+          aria-label="Open profile menu"
+        >
+          <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[#991b1b] text-xs font-semibold text-white">
+            {initials}
+          </span>
+          <ChevronDown className="h-4 w-4 text-zinc-400" />
+        </button>
+      </DropdownMenuTrigger>
+
+      <DropdownMenuContent align="end" className="w-56 border-zinc-800 bg-zinc-900 text-zinc-100">
+        <DropdownMenuLabel className="px-3 py-2">
+          <p className="truncate text-sm font-medium">{username}</p>
+          <p className="truncate text-xs text-zinc-500">{roleLabel}</p>
+        </DropdownMenuLabel>
+        <DropdownMenuSeparator className="bg-zinc-800" />
+        <DropdownMenuItem asChild className="cursor-pointer text-zinc-200 focus:bg-zinc-800 focus:text-white">
+          <Link href="/profile" className="flex items-center gap-2">
+            <User className="h-4 w-4" />
+            Profile
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onSelect={handleLogout}
+          className="cursor-pointer text-red-300 focus:bg-zinc-800 focus:text-red-200"
+        >
+          <LogOut className="mr-2 h-4 w-4" />
+          Logout
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
 
