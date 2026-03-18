@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { ArrowLeft, ChevronLeft, ChevronRight, Clock3, Eye, ThumbsUp, User } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { useArticle } from "@/hooks/useArticles";
+import { AdminProfileSection } from "@/components/layout/AdminProfileSection";
 
 type ArticlePreviewClientProps = {
   articleId: string;
@@ -85,19 +86,22 @@ export function ArticlePreviewClient({ articleId }: ArticlePreviewClientProps) {
     <div className="min-h-screen bg-zinc-950 px-4 py-6 lg:px-6">
       <div className="mx-auto max-w-4xl">
         <div className="mb-4 flex items-center justify-between gap-3">
-          <Link
-            href="/articles"
-            className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-white"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Back to Articles
-          </Link>
-          <Link
-            href={`/articles/${article.id}`}
-            className="rounded-lg bg-[#991b1b] px-3 py-2 text-sm font-medium text-white hover:bg-[#7f1d1d]"
-          >
-            Open Edit Mode
-          </Link>
+          <div className="flex items-center gap-3">
+            <Link
+              href="/articles"
+              className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-white"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Back to Articles
+            </Link>
+            <Link
+              href={`/articles/${article.id}`}
+              className="rounded-lg bg-[#991b1b] px-3 py-2 text-sm font-medium text-white hover:bg-[#7f1d1d]"
+            >
+              Open Edit Mode
+            </Link>
+          </div>
+          <AdminProfileSection />
         </div>
 
         <article className="rounded-2xl border border-zinc-800 bg-zinc-900">

@@ -13,6 +13,7 @@ import type { SubcategoryOption } from "@/lib/api/articles";
 import { articleEditSchema, type ArticleEditFormValues } from "@/lib/schemas/article";
 import { RichTextEditor } from "@/components/articles/RichTextEditor";
 import { AIReviewPanel } from "@/components/articles/AIReviewPanel";
+import { AdminProfileSection } from "@/components/layout/AdminProfileSection";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -218,13 +219,16 @@ export function ArticleEditClient({ articleId }: ArticleEditClientProps) {
   return (
     <div className="min-h-screen bg-zinc-950 px-4 py-6 lg:px-6">
       <div className="mx-auto max-w-3xl">
-        <Link
-          href="/articles"
-          className="mb-6 inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-white"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back to Articles
-        </Link>
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+          <Link
+            href="/articles"
+            className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-white"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back to Articles
+          </Link>
+          <AdminProfileSection />
+        </div>
 
         {article && (
           <div className="mb-6">

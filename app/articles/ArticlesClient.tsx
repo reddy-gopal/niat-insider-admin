@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import type { ArticleStatus } from "@/types/article";
 import { getCampusOptions } from "@/lib/api/articles";
 import type { AdminCampusOption } from "@/lib/api/articles";
+import { AdminProfileSection } from "@/components/layout/AdminProfileSection";
 
 const PAGE_SIZE = 20;
 const STATUS_FILTERS = [
@@ -295,6 +296,7 @@ export function ArticlesClient() {
                 ⚡ AI: Needs Review ({aiNeedsReviewCount})
               </button>
             </div>
+            <AdminProfileSection />
           </div>
         </div>
       </header>
