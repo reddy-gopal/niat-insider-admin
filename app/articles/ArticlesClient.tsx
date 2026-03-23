@@ -7,7 +7,10 @@ import {
   useUpdateArticle,
   useDeleteArticle,
   useBulkUpdateArticles,
+  useAuthorLeaderboard,
 } from "@/hooks/useArticles";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useToast } from "@/hooks/useToast";
 import { AdminArticleCard } from "@/components/articles/AdminArticleCard";
 import { BulkActionBar } from "@/components/articles/BulkActionBar";
@@ -34,14 +37,18 @@ const STATUS_TOAST: Record<string, string> = {
 };
 
 export function ArticlesClient() {
+  const searchParams = useSearchParams();
+  const initialAuthorFilter = searchParams.get("author_id") ?? "";
+  const initialAiGeneratedFilter = searchParams.get("ai_generated") ?? "";
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [campusFilter, setCampusFilter] = useState("");
+  const [authorFilter] = useState(initialAuthorFilter);
+  const [aiGeneratedFilter, setAiGeneratedFilter] = useState(initialAiGeneratedFilter);
   const [campuses, setCampuses] = useState<AdminCampusOption[]>([]);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [selectionMode, setSelectionMode] = useState(false);
-  const [aiFilterActive, setAiFilterActive] = useState(false);
   const loadMoreRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -67,6 +74,8 @@ export function ArticlesClient() {
     ...(debouncedSearch ? { search: debouncedSearch } : {}),
     ...(statusFilter ? { status: statusFilter } : {}),
     ...(campusFilter ? { campus_id: campusFilter } : {}),
+    ...(authorFilter ? { author_id: authorFilter } : {}),
+    ...(aiGeneratedFilter ? { ai_generated: aiGeneratedFilter } : {}),
     page_size: PAGE_SIZE,
   };
   const {
@@ -78,6 +87,11 @@ export function ArticlesClient() {
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteArticles(params);
+  const { data: authorLeaderboard = [] } = useAuthorLeaderboard();
+  const selectedAuthorName =
+    authorFilter
+      ? authorLeaderboard.find((a) => a.id === authorFilter)?.username ?? "Author"
+      : null;
 
   // Load next page when sentinel scrolls into view
   useEffect(() => {
@@ -107,13 +121,7 @@ export function ArticlesClient() {
 
   const results =
     data?.pages.flatMap((p) => p.results) ?? [];
-  const displayedArticles = aiFilterActive
-    ? results.filter(
-        (a) =>
-          a.ai_feedback?.status_recommendation &&
-          a.ai_feedback.status_recommendation !== a.status
-      )
-    : results;
+  const displayedArticles = results;
 
   const selectAll = useCallback(() => {
     setSelectedIds(new Set(displayedArticles.map((a) => a.id)));
@@ -210,11 +218,6 @@ export function ArticlesClient() {
 
   const count = data?.pages[0]?.count ?? 0;
   const loadedCount = results.length;
-  const aiNeedsReviewCount = results.filter(
-    (a) =>
-      a.ai_feedback?.status_recommendation &&
-      a.ai_feedback.status_recommendation !== a.status
-  ).length;
   const start = loadedCount > 0 ? 1 : 0;
   const end = loadedCount;
 
@@ -249,18 +252,18 @@ export function ArticlesClient() {
               {isLoading ? "…" : count}
             </span>
           </div>
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center">
             <Input
               type="search"
               placeholder="Search by title…"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-64 rounded-lg border-zinc-700 bg-zinc-900 px-3 py-2 text-white placeholder:text-zinc-500"
+              className="w-full rounded-lg border-zinc-700 bg-zinc-900 px-3 py-2 text-white placeholder:text-zinc-500 sm:w-64"
             />
             <select
               value={campusFilter}
               onChange={(e) => setCampusFilter(e.target.value)}
-              className="w-56 rounded-lg border border-zinc-700 bg-zinc-900 px-3 py-2 text-sm text-white"
+              className="w-full rounded-lg border border-zinc-700 bg-zinc-900 px-3 py-2 text-sm text-white sm:w-56"
             >
               <option value="">All campuses</option>
               {campuses.map((campus) => (
@@ -269,33 +272,26 @@ export function ArticlesClient() {
                 </option>
               ))}
             </select>
-            <div className="flex flex-wrap gap-1">
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="w-full rounded-lg border border-zinc-700 bg-zinc-900 px-3 py-2 text-sm text-white sm:w-44"
+            >
               {STATUS_FILTERS.map((f) => (
-                <button
-                  key={f.value || "all"}
-                  type="button"
-                  onClick={() => setStatusFilter(f.value)}
-                  className={`rounded-full px-3 py-1.5 text-sm transition-colors ${
-                    statusFilter === f.value
-                      ? "bg-[#991b1b] text-white"
-                      : "bg-zinc-800 text-zinc-400 hover:text-white"
-                  }`}
-                >
+                <option key={f.value || "all"} value={f.value}>
                   {f.label}
-                </button>
+                </option>
               ))}
-              <button
-                type="button"
-                onClick={() => setAiFilterActive((on) => !on)}
-                className={`rounded-full border px-3 py-1.5 text-sm transition-colors ${
-                  aiFilterActive
-                    ? "border-purple-700 bg-purple-900 text-purple-300"
-                    : "border-zinc-700 bg-zinc-800 text-zinc-400 hover:text-white"
-                }`}
-              >
-                ⚡ AI: Needs Review ({aiNeedsReviewCount})
-              </button>
-            </div>
+            </select>
+            <select
+              value={aiGeneratedFilter}
+              onChange={(e) => setAiGeneratedFilter(e.target.value)}
+              className="w-full rounded-lg border border-zinc-700 bg-zinc-900 px-3 py-2 text-sm text-white sm:w-56"
+            >
+              <option value="">All content types</option>
+              <option value="false">User-generated only</option>
+              <option value="true">AI-generated only</option>
+            </select>
             <AdminProfileSection />
           </div>
         </div>
@@ -303,6 +299,58 @@ export function ArticlesClient() {
 
       {/* Content */}
       <main className="px-4 py-6 lg:px-6">
+        <section className="mb-6 rounded-xl border border-zinc-800 bg-zinc-900/60 p-4">
+          {authorFilter ? (
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-sm text-zinc-300">
+                {selectedAuthorName}&apos;s Articles
+              </p>
+              <Link
+                href="/authors"
+                className="inline-flex w-fit rounded-md bg-[#991b1b] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#7f1d1d]"
+              >
+                Go to Leaderboard
+              </Link>
+            </div>
+          ) : (
+            <>
+              <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-zinc-300">
+                Top Authors by Article Count
+              </h2>
+              {authorLeaderboard.length === 0 ? (
+                <p className="text-sm text-zinc-500">No author data available yet.</p>
+              ) : (
+                <div className="grid gap-2 lg:grid-cols-3">
+                  {authorLeaderboard.slice(0, 3).map((author, idx) => (
+                    <div
+                      key={author.id}
+                      className="flex items-center justify-between rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-2"
+                    >
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-medium text-white">
+                          {idx + 1}. {author.username}
+                        </p>
+                        <p className="truncate text-xs text-zinc-500">{author.email}</p>
+                      </div>
+                      <span className="ml-3 shrink-0 rounded-full bg-[#991b1b]/20 px-2 py-0.5 text-xs font-semibold text-[#fca5a5]">
+                        {author.article_count}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <div className="mt-3">
+                <Link
+                  href="/authors"
+                  className="inline-flex rounded-md bg-[#991b1b] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#7f1d1d]"
+                >
+                  View more
+                </Link>
+              </div>
+            </>
+          )}
+        </section>
+
         {isLoading ? (
           <div className="grid gap-4 sm:grid-cols-1 lg:grid-cols-2">
             {Array.from({ length: 6 }).map((_, i) => (

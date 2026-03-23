@@ -2,6 +2,7 @@ import api from "@/lib/axios";
 import type {
   Article,
   ArticleListItem,
+  AuthorLeaderboardItem,
   PaginatedResponse,
 } from "@/types/article";
 
@@ -11,6 +12,8 @@ export type GetArticlesParams = {
   status?: string
   search?: string
   campus_id?: string
+  author_id?: string
+  ai_generated?: string
   ordering?: string
   page?: number
   page_size?: number
@@ -44,6 +47,11 @@ export async function updateArticle(
 
 export async function deleteArticle(id: string): Promise<void> {
   await api.delete(`${ADMIN_ARTICLES_BASE}/${id}/`);
+}
+
+export async function getAuthorLeaderboard(): Promise<AuthorLeaderboardItem[]> {
+  const { data } = await api.get<AuthorLeaderboardItem[]>(`${ADMIN_ARTICLES_BASE}/authors/`);
+  return data ?? [];
 }
 
 /** POST /api/articles/upload_image/ — multipart form "image" or "file". Returns { url }. */

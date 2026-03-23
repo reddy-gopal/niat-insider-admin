@@ -12,7 +12,6 @@ import { uploadArticleImage, getSubcategories } from "@/lib/api/articles";
 import type { SubcategoryOption } from "@/lib/api/articles";
 import { articleEditSchema, type ArticleEditFormValues } from "@/lib/schemas/article";
 import { RichTextEditor } from "@/components/articles/RichTextEditor";
-import { AIReviewPanel } from "@/components/articles/AIReviewPanel";
 import { AdminProfileSection } from "@/components/layout/AdminProfileSection";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -102,32 +101,6 @@ export function ArticleEditClient({ articleId }: ArticleEditClientProps) {
       cancelled = true;
     };
   }, [category]);
-
-  const handleStatusChange = async (
-    id: string,
-    newStatus: string,
-    rejectionReason?: string
-  ) => {
-    try {
-      await updateMutation.mutateAsync({
-        id,
-        data: {
-          status: newStatus as ArticleEditFormValues["status"],
-          ...(rejectionReason && { rejection_reason: rejectionReason }),
-        },
-      });
-      form.setValue("status", newStatus as ArticleEditFormValues["status"]);
-      if (rejectionReason) form.setValue("rejection_reason", rejectionReason);
-      toast({ title: "Status updated" });
-    } catch (err: unknown) {
-      const ax = err as { response?: { data?: { detail?: string } } };
-      toast({
-        title: "Error",
-        description: ax.response?.data?.detail ?? "Failed to update status",
-        variant: "destructive",
-      });
-    }
-  };
 
   const onSubmit = async (values: ArticleEditFormValues) => {
     try {
@@ -229,18 +202,6 @@ export function ArticleEditClient({ articleId }: ArticleEditClientProps) {
           </Link>
           <AdminProfileSection />
         </div>
-
-        {article && (
-          <div className="mb-6">
-            <AIReviewPanel
-              feedback={article.ai_feedback}
-              reviewedAt={article.ai_reviewed_at ?? null}
-              articleId={articleId}
-              currentStatus={form.watch("status")}
-              onStatusChange={handleStatusChange}
-            />
-          </div>
-        )}
 
         {article && (
           <Card className="mb-6 border-zinc-800 bg-zinc-900">

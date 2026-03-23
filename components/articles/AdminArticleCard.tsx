@@ -5,7 +5,6 @@ import { ThumbsUp, Eye, Star } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { StatusBadge } from "./StatusBadge";
 import { QuickStatusMenu } from "./QuickStatusMenu";
-import { AIScoreBadge } from "./AIScoreBadge";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -56,8 +55,6 @@ export function AdminArticleCard({
   const relativeDate = formatDistanceToNow(new Date(article.updated_at), {
     addSuffix: true,
   });
-  const score = article.ai_confident_score ?? article.ai_feedback?.confidence_score ?? null;
-  const recommendation = article.ai_feedback?.status_recommendation ?? null;
 
   return (
     <article
@@ -82,7 +79,6 @@ export function AdminArticleCard({
       <div className="flex items-center justify-between">
         <div className="flex flex-wrap items-center gap-2">
           <StatusBadge status={article.status} />
-          <AIScoreBadge score={score} recommendation={recommendation} />
         </div>
         <div className="flex items-center gap-1">
           <QuickStatusMenu article={article} onStatusChange={onStatusChange} />
@@ -103,6 +99,15 @@ export function AdminArticleCard({
         </span>
         <span className="rounded-full bg-zinc-800 px-2.5 py-0.5 text-xs text-zinc-300">
           {article.campus_name}
+        </span>
+        <span
+          className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
+            article.ai_generated
+              ? "bg-purple-900/30 text-purple-300"
+              : "bg-emerald-900/30 text-emerald-300"
+          }`}
+        >
+          {article.ai_generated ? "AI-generated" : "User-generated"}
         </span>
       </div>
 

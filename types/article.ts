@@ -6,6 +6,10 @@ export type Author = {
   email: string
 }
 
+export type AuthorLeaderboardItem = Author & {
+  article_count: number
+}
+
 export type AIFeedback = {
   confidence_score: number
   brand_alignment: number
@@ -45,6 +49,7 @@ export type Article = {
   campus_id: string
   upvote_count: number
   view_count: number
+  ai_generated: boolean
   cover_image: string
   images: string[]
   created_at: string
@@ -68,6 +73,7 @@ export type ArticleListItem = {
   campus_slug: string
   upvote_count: number
   view_count: number
+  ai_generated: boolean
   featured: boolean
   ai_confident_score?: number | null
   ai_feedback: AIFeedback | null

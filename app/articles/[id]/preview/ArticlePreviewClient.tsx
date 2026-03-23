@@ -201,7 +201,7 @@ export function ArticlePreviewClient({ articleId }: ArticlePreviewClientProps) {
             ) : null}
 
             <div
-              className="prose prose-invert max-w-none prose-headings:text-zinc-100 prose-p:text-zinc-200 prose-strong:text-zinc-100 prose-a:text-red-300"
+              className="prose prose-invert max-w-none [&_*]:!text-zinc-100 prose-headings:!text-zinc-100 prose-p:!text-zinc-100 prose-strong:!text-white prose-a:!text-red-300"
               dangerouslySetInnerHTML={{ __html: cleanedBody }}
             />
           </div>

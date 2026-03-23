@@ -11,6 +11,7 @@ import {
   getArticle,
   updateArticle,
   deleteArticle,
+  getAuthorLeaderboard,
 } from "@/lib/api/articles";
 import type { GetArticlesParams } from "@/lib/api/articles";
 import type { ArticleStatus } from "@/types/article";
@@ -82,5 +83,12 @@ export function useBulkUpdateArticles() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["articles"] });
     },
+  });
+}
+
+export function useAuthorLeaderboard() {
+  return useQuery({
+    queryKey: ["authors", "leaderboard"],
+    queryFn: getAuthorLeaderboard,
   });
 }
