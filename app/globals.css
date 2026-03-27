@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -24,7 +26,24 @@
     --input: 240 5.9% 90%;
     --ring: 240 5.9% 10%;
     --radius: 0.5rem;
+
+    /* NIAT Insider Custom Colors */
+    --niat-maroon: #991b1b;
+    --niat-maroon-light: #b91c1c;
+    --niat-maroon-dark: #7f1d1d;
+    --niat-purple: #7678ed;
+    --niat-purple-light: #9496f0;
+    --niat-purple-dark: #5a5cb8;
+    --niat-yellow: #f7b801;
+    --niat-orange: #f18701;
+    --niat-red-orange: #f35b04;
+    --niat-navbar-bg: #fff8eb;
+    --niat-section-bg: #fbf2f3;
+    --niat-text: #000000;
+    --niat-text-muted: #6b7280;
+    --niat-border: rgba(30, 41, 59, 0.1);
   }
+
   .dark {
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
@@ -46,13 +65,147 @@
     --input: 240 3.7% 15.9%;
     --ring: 240 4.9% 83.9%;
   }
-}
 
-@layer base {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
   }
+}
+
+/* NIAT Insider Article PREMIUM CORE STYLES                 */
+/* These are placed outside layers to ensure maximum weight */
+
+.ni-article {
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.8;
+  color: #111827 !important;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Support for both classes and standard tags within ni-article */
+.ni-article p,
+.ni-para {
+  font-size: 1.15rem;
+  margin-bottom: 1.75rem;
+  color: #374151 !important;
+  line-height: 1.8;
+}
+
+.ni-article .ni-intro {
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: #1f2937 !important;
+  margin-bottom: 2.5rem;
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+  border-left: 4px solid var(--niat-maroon);
+  padding-left: 1.5rem;
+}
+
+.ni-article h2,
+.ni-h2 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin-top: 3.5rem;
+  margin-bottom: 1.5rem;
+  color: #111827 !important;
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+}
+
+.ni-article .ni-highlight,
+.ni-highlight {
+  background: linear-gradient(135deg, #fef2f2 0%, #fff7ed 100%) !important;
+  border: 1px solid rgba(153, 27, 27, 0.08) !important;
+  border-radius: 1.25rem;
+  padding: 2.5rem;
+  margin: 3rem 0;
+  box-shadow: 0 10px 15px -3px rgba(153, 27, 27, 0.04);
+}
+
+.ni-highlight p {
+  margin-bottom: 0 !important;
+  font-weight: 600 !important;
+  color: #991b1b !important;
+  font-size: 1.1rem;
+}
+
+.ni-article ul,
+.ni-list {
+  margin-bottom: 2rem;
+  padding-left: 0.5rem;
+  list-style-type: none;
+}
+
+.ni-article li,
+.ni-list-item {
+  position: relative;
+  padding-left: 2rem;
+  margin-bottom: 1rem;
+  font-size: 1.15rem;
+  color: #374151 !important;
+}
+
+.ni-article li::before,
+.ni-list-item::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--niat-maroon);
+  font-weight: 700;
+}
+
+.ni-article blockquote,
+.ni-quote {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.75rem;
+  font-style: italic;
+  color: #4b5563 !important;
+  border-left: 5px solid var(--niat-yellow);
+  padding-left: 2.5rem;
+  margin: 4rem 0;
+  position: relative;
+  line-height: 1.4;
+}
+
+.ni-article blockquote::before {
+  content: '"';
+  position: absolute;
+  top: -1rem;
+  left: 0.5rem;
+  font-size: 5rem;
+  color: var(--niat-yellow);
+  opacity: 0.2;
+  font-family: serif;
+  pointer-events: none;
+}
+
+.ni-author-note {
+  margin-top: 4rem;
+  padding: 2.5rem;
+  background-color: #f9fafb !important;
+  border-radius: 1.25rem;
+  border-left: 5px solid #e5e7eb;
+  font-style: italic;
+  color: #6b7280 !important;
+  font-size: 1.05rem;
+}
+
+.ni-tag {
+  display: inline-block;
+  background-color: #f3f4f6 !important;
+  color: #4b5563 !important;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid #e5e7eb;
 }

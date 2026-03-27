@@ -180,9 +180,8 @@ export function ArticlePreviewClient({ articleId }: ArticlePreviewClientProps) {
                           key={i}
                           type="button"
                           onClick={() => setCarouselIndex(i)}
-                          className={`h-2 w-2 rounded-full transition-colors ${
-                            i === carouselIndex ? "bg-white" : "bg-white/50 hover:bg-white/70"
-                          }`}
+                          className={`h-2 w-2 rounded-full transition-colors ${i === carouselIndex ? "bg-white" : "bg-white/50 hover:bg-white/70"
+                            }`}
                           aria-label={`Go to image ${i + 1}`}
                         />
                       ))}
@@ -200,8 +199,12 @@ export function ArticlePreviewClient({ articleId }: ArticlePreviewClientProps) {
               </div>
             ) : null}
 
+            {/* Article Content Area */}
             <div
-              className="prose prose-invert max-w-none [&_*]:!text-zinc-100 prose-headings:!text-zinc-100 prose-p:!text-zinc-100 prose-strong:!text-white prose-a:!text-red-300"
+              className={`transition-all duration-300 ${cleanedBody.includes('ni-article')
+                ? 'bg-white rounded-xl p-8 shadow-lg border border-zinc-200'
+                : 'text-zinc-100'
+                }`}
               dangerouslySetInnerHTML={{ __html: cleanedBody }}
             />
           </div>

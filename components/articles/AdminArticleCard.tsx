@@ -92,6 +92,27 @@ export function AdminArticleCard({
         </Link>
       </h2>
 
+      {/* SEO fields */}
+      <div className="space-y-1 rounded-lg border border-zinc-800 bg-zinc-950/60 px-3 py-2">
+        <p className="text-xs text-zinc-400">
+          <span className="font-medium text-zinc-300">Slug:</span> {article.slug}
+        </p>
+        <p className="line-clamp-1 text-xs text-zinc-400">
+          <span className="font-medium text-zinc-300">Meta title:</span>{" "}
+          {article.meta_title?.trim() ? article.meta_title : "—"}
+        </p>
+        <p className="line-clamp-2 text-xs text-zinc-400">
+          <span className="font-medium text-zinc-300">Meta description:</span>{" "}
+          {article.meta_description?.trim() ? article.meta_description : "—"}
+        </p>
+        <p className="line-clamp-2 text-xs text-zinc-400">
+          <span className="font-medium text-zinc-300">Meta keywords:</span>{" "}
+          {Array.isArray(article.meta_keywords) && article.meta_keywords.length > 0
+            ? article.meta_keywords.join(", ")
+            : "—"}
+        </p>
+      </div>
+
       {/* Row 3: Category + campus pills */}
       <div className="flex flex-wrap items-center gap-2">
         <span className="rounded-full bg-[#991b1b]/20 px-2.5 py-0.5 text-xs font-medium text-[#991b1b]">

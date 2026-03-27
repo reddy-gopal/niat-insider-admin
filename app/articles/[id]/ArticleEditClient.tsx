@@ -52,6 +52,7 @@ export function ArticleEditClient({ articleId }: ArticleEditClientProps) {
   const form = useForm<ArticleEditFormValues>({
     resolver: zodResolver(articleEditSchema),
     defaultValues: {
+      slug: "",
       title: "",
       body: "",
       excerpt: "",
@@ -61,6 +62,9 @@ export function ArticleEditClient({ articleId }: ArticleEditClientProps) {
       category: "onboarding-kit",
       subcategory: "",
       subcategory_other: "",
+      meta_title: "",
+      meta_description: "",
+      meta_keywords: [],
       topic: "",
       cover_image: "",
       images: [],
@@ -69,6 +73,7 @@ export function ArticleEditClient({ articleId }: ArticleEditClientProps) {
 
   const category = form.watch("category");
   const status = form.watch("status");
+  const metaKeywords = form.watch("meta_keywords") ?? [];
   const images = form.watch("images") ?? [];
   const cover_image = form.watch("cover_image") ?? "";
 
@@ -76,6 +81,7 @@ export function ArticleEditClient({ articleId }: ArticleEditClientProps) {
   useEffect(() => {
     if (!article) return;
     form.reset({
+      slug: article.slug || "",
       title: article.title,
       body: article.body || "",
       excerpt: article.excerpt || "",
@@ -85,6 +91,9 @@ export function ArticleEditClient({ articleId }: ArticleEditClientProps) {
       category: article.category as ArticleEditFormValues["category"],
       subcategory: article.subcategory || "",
       subcategory_other: article.subcategory_other || "",
+      meta_title: article.meta_title || "",
+      meta_description: article.meta_description || "",
+      meta_keywords: article.meta_keywords ?? [],
       topic: article.topic || "",
       cover_image: article.cover_image || "",
       images: article.images ?? [],
@@ -107,6 +116,7 @@ export function ArticleEditClient({ articleId }: ArticleEditClientProps) {
       await updateMutation.mutateAsync({
         id: articleId,
         data: {
+          slug: values.slug,
           title: values.title,
           body: values.body,
           excerpt: values.excerpt ?? "",
@@ -116,6 +126,9 @@ export function ArticleEditClient({ articleId }: ArticleEditClientProps) {
           category: values.category,
           subcategory: values.subcategory ?? "",
           subcategory_other: values.subcategory_other ?? "",
+          meta_title: values.meta_title ?? "",
+          meta_description: values.meta_description ?? "",
+          meta_keywords: values.meta_keywords ?? [],
           topic: values.topic ?? "",
           cover_image: values.cover_image ?? "",
           images: values.images ?? [],
@@ -236,6 +249,23 @@ export function ArticleEditClient({ articleId }: ArticleEditClientProps) {
             <CardContent className="space-y-6">
               {/* Title */}
               <div className="space-y-2">
+                <Label htmlFor="slug" className="text-zinc-200">
+                  Slug
+                </Label>
+                <Input
+                  id="slug"
+                  {...form.register("slug")}
+                  className="border-zinc-700 bg-zinc-800 text-white"
+                />
+                {form.formState.errors.slug && (
+                  <p className="text-sm text-red-400">
+                    {form.formState.errors.slug.message}
+                  </p>
+                )}
+              </div>
+
+              {/* Title */}
+              <div className="space-y-2">
                 <Label htmlFor="title" className="text-zinc-200">
                   Title
                 </Label>
@@ -276,6 +306,49 @@ export function ArticleEditClient({ articleId }: ArticleEditClientProps) {
                   {...form.register("excerpt")}
                   rows={3}
                   className="border-zinc-700 bg-zinc-800 text-white placeholder:text-zinc-500"
+                />
+              </div>
+
+              {/* SEO metadata */}
+              <div className="space-y-2">
+                <Label htmlFor="meta_title" className="text-zinc-200">
+                  Meta title
+                </Label>
+                <Input
+                  id="meta_title"
+                  {...form.register("meta_title")}
+                  className="border-zinc-700 bg-zinc-800 text-white"
+                  placeholder="SEO title for search engines"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="meta_description" className="text-zinc-200">
+                  Meta description
+                </Label>
+                <Textarea
+                  id="meta_description"
+                  {...form.register("meta_description")}
+                  rows={3}
+                  className="border-zinc-700 bg-zinc-800 text-white placeholder:text-zinc-500"
+                  placeholder="SEO description"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="meta_keywords" className="text-zinc-200">
+                  Meta keywords
+                </Label>
+                <Input
+                  id="meta_keywords"
+                  value={metaKeywords.join(", ")}
+                  onChange={(e) => {
+                    const keywords = e.target.value
+                      .split(",")
+                      .map((k) => k.trim())
+                      .filter(Boolean);
+                    form.setValue("meta_keywords", keywords);
+                  }}
+                  className="border-zinc-700 bg-zinc-800 text-white placeholder:text-zinc-500"
+                  placeholder="keyword1, keyword2, keyword3"
                 />
               </div>
 

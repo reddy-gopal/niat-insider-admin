@@ -8,6 +8,7 @@ export type Author = {
 
 export type AuthorLeaderboardItem = Author & {
   article_count: number
+  campus_name: string
 }
 
 export type AIFeedback = {
@@ -30,6 +31,7 @@ export type AIFeedback = {
 
 export type Article = {
   id: string
+  slug: string
   title: string
   body: string
   excerpt: string
@@ -40,6 +42,9 @@ export type Article = {
   category_fk: string | null
   subcategory: string
   subcategory_other: string
+  meta_title: string
+  meta_description: string
+  meta_keywords: string[]
   topic: string
   is_global_guide: boolean
   author: Author
@@ -63,6 +68,9 @@ export type ArticleListItem = {
   id: string
   slug: string
   title: string
+  meta_title: string
+  meta_description: string
+  meta_keywords: string[]
   status: ArticleStatus
   created_at: string
   updated_at: string
