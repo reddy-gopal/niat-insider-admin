@@ -166,13 +166,21 @@ export default function ProfilePage() {
     <div className="min-h-screen bg-zinc-950 px-4 py-6 lg:px-6">
       <div className="mx-auto max-w-4xl">
         <div className="mb-6 flex items-center justify-between gap-3">
-          <Link
-            href="/articles"
-            className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-white"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            Back to Articles
-          </Link>
+          <div className="flex items-center gap-4">
+            <Link
+              href="/articles"
+              className="inline-flex items-center gap-2 text-sm text-zinc-400 hover:text-white"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Back to Articles
+            </Link>
+            <Link
+              href="/moderators"
+              className="text-sm text-zinc-400 hover:text-white"
+            >
+              Moderators
+            </Link>
+          </div>
           <AdminProfileSection />
         </div>
 
