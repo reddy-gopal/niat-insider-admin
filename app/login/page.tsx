@@ -49,7 +49,7 @@ export default function LoginPage() {
     setLoading(true);
     try {
       await api.post("/api/verification/otp/request/", {
-        phone: trimmed,
+        phone_number: trimmed,
         for: "login",
       });
       setStep("otp");
@@ -77,7 +77,7 @@ export default function LoginPage() {
     try {
       const { data } = await api.post<{ access: string; refresh: string }>(
         "/api/auth/login/phone/",
-        { phone: phone.trim(), code }
+        { phone_number: phone.trim(), code }
       );
       const me = await api.get<{ role?: string }>("/api/auth/me/", {
         headers: { Authorization: `Bearer ${data.access}` },
