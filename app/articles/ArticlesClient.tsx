@@ -251,6 +251,18 @@ export function ArticlesClient() {
             <span className="rounded-full bg-zinc-800 px-2.5 py-0.5 text-sm text-zinc-300">
               {isLoading ? "…" : count}
             </span>
+            <Link
+              href="/authors"
+              className="rounded-lg border border-zinc-700 px-3 py-1.5 text-sm text-zinc-300 hover:border-zinc-500 hover:text-white"
+            >
+              Authors
+            </Link>
+            <Link
+              href="/moderators"
+              className="rounded-lg border border-zinc-700 px-3 py-1.5 text-sm text-zinc-300 hover:border-zinc-500 hover:text-white"
+            >
+              Moderators
+            </Link>
           </div>
           <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center">
             <Input

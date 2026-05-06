@@ -16,7 +16,13 @@ export default function AuthorsPage() {
               href="/articles"
               className="rounded-lg border border-zinc-700 px-3 py-1.5 text-sm text-zinc-300 hover:border-zinc-500 hover:text-white"
             >
-              Back to Articles
+              Articles
+            </Link>
+            <Link
+              href="/moderators"
+              className="rounded-lg border border-zinc-700 px-3 py-1.5 text-sm text-zinc-300 hover:border-zinc-500 hover:text-white"
+            >
+              Moderators
             </Link>
             <h1 className="text-xl font-semibold text-white">Authors Leaderboard</h1>
           </div>
