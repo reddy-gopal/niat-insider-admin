@@ -74,6 +74,14 @@
     @apply bg-background text-foreground;
     font-family: 'Inter', sans-serif;
   }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
 
 /* NIAT Insider Article PREMIUM CORE STYLES                 */

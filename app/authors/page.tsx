@@ -2,28 +2,12 @@
 
 import Link from "next/link";
 import { useAuthorLeaderboard } from "@/hooks/useArticles";
-import { AdminProfileSection } from "@/components/layout/AdminProfileSection";
 
 export default function AuthorsPage() {
   const { data: authors = [], isLoading, isError } = useAuthorLeaderboard();
 
   return (
     <div className="min-h-screen bg-zinc-950">
-      <header className="sticky top-0 z-10 border-b border-zinc-800 bg-zinc-950 px-4 py-4 lg:px-6">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex flex-wrap items-center gap-3">
-            <Link
-              href="/articles"
-              className="rounded-lg border border-zinc-700 px-3 py-1.5 text-sm text-zinc-300 hover:border-zinc-500 hover:text-white"
-            >
-              Back to Articles
-            </Link>
-            <h1 className="text-xl font-semibold text-white">Authors Leaderboard</h1>
-          </div>
-          <AdminProfileSection />
-        </div>
-      </header>
-
       <main className="px-4 py-6 lg:px-6">
         {isLoading ? (
           <p className="text-sm text-zinc-400">Loading authors...</p>

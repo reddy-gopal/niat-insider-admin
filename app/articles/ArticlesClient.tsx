@@ -18,7 +18,6 @@ import { Input } from "@/components/ui/input";
 import type { ArticleStatus } from "@/types/article";
 import { getCampusOptions } from "@/lib/api/articles";
 import type { AdminCampusOption } from "@/lib/api/articles";
-import { AdminProfileSection } from "@/components/layout/AdminProfileSection";
 
 const PAGE_SIZE = 20;
 const STATUS_FILTERS = [
@@ -223,33 +222,32 @@ export function ArticlesClient() {
 
   return (
     <div className="min-h-screen bg-zinc-950">
-      {/* Top bar */}
-      <header className="sticky top-0 z-10 border-b border-zinc-800 bg-zinc-950 px-4 py-4 lg:px-6">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      {/* Filter bar */}
+      <div className="sticky top-[64px] z-10 border-b border-zinc-800 bg-zinc-950/95 backdrop-blur-sm px-4 py-3 lg:px-6">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-wrap items-center gap-3">
             <button
               type="button"
               onClick={toggleSelectionMode}
               className={`rounded-lg px-3 py-1.5 text-sm transition-colors ${
                 selectionMode
-                  ? "bg-[#991b1b] text-white"
-                  : "border border-zinc-700 text-zinc-400 hover:border-zinc-500"
+                  ? "bg-[#e11d48] text-white"
+                  : "border border-zinc-700 bg-zinc-900 text-zinc-300 hover:border-zinc-500 hover:text-white"
               }`}
             >
-              {selectionMode ? "✓ Selecting" : "Select"}
+              {selectionMode ? "✓ Selecting" : "Select Multiple"}
             </button>
             {selectionMode && (
               <button
                 type="button"
                 onClick={selectAll}
-                className="text-sm text-zinc-400 underline hover:text-white"
+                className="text-sm font-medium text-zinc-400 underline-offset-4 hover:text-white hover:underline"
               >
                 Select All
               </button>
             )}
-            <h1 className="text-xl font-semibold text-white">Articles</h1>
-            <span className="rounded-full bg-zinc-800 px-2.5 py-0.5 text-sm text-zinc-300">
-              {isLoading ? "…" : count}
+            <span className="hidden rounded-full bg-zinc-800 px-3 py-1 text-xs font-medium text-zinc-300 sm:inline-block">
+              {isLoading ? "Loading..." : `${count} total`}
             </span>
           </div>
           <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center">
@@ -292,10 +290,9 @@ export function ArticlesClient() {
               <option value="false">User-generated only</option>
               <option value="true">AI-generated only</option>
             </select>
-            <AdminProfileSection />
           </div>
         </div>
-      </header>
+      </div>
 
       {/* Content */}
       <main className="px-4 py-6 lg:px-6">

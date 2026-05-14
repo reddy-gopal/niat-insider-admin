@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { QueryProvider } from "@/components/providers/QueryProvider";
 import { Toaster } from "@/components/ui/toaster";
+import { Navbar } from "@/components/layout/Navbar";
+import { Suspense } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,6 +27,9 @@ export default function RootLayout({
     <html lang="en" className="dark" suppressHydrationWarning>
       <body suppressHydrationWarning className={`${inter.className} min-h-screen bg-zinc-950 text-zinc-100 antialiased`}>
         <QueryProvider>
+          <Suspense fallback={null}>
+            <Navbar />
+          </Suspense>
           {children}
           <Toaster />
         </QueryProvider>
