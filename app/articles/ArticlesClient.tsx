@@ -20,6 +20,14 @@ import { getCampusOptions } from "@/lib/api/articles";
 import type { AdminCampusOption } from "@/lib/api/articles";
 
 const PAGE_SIZE = 20;
+
+const TIME_FILTERS = [
+  { label: "All Time", value: undefined },
+  { label: "Last 7 Days", value: 7 },
+  { label: "Last 30 Days", value: 30 },
+  { label: "Last 90 Days", value: 90 },
+];
+
 const STATUS_FILTERS = [
   { value: "", label: "All" },
   { value: "pending_review", label: "Pending" },
@@ -43,6 +51,7 @@ export function ArticlesClient() {
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [campusFilter, setCampusFilter] = useState("");
+  const [timeFilter, setTimeFilter] = useState<number | undefined>(undefined);
   const [authorFilter] = useState(initialAuthorFilter);
   const [aiGeneratedFilter, setAiGeneratedFilter] = useState(initialAiGeneratedFilter);
   const [campuses, setCampuses] = useState<AdminCampusOption[]>([]);
@@ -75,6 +84,8 @@ export function ArticlesClient() {
     ...(campusFilter ? { campus_id: campusFilter } : {}),
     ...(authorFilter ? { author_id: authorFilter } : {}),
     ...(aiGeneratedFilter ? { ai_generated: aiGeneratedFilter } : {}),
+    ...(timeFilter ? { days: timeFilter } : {}),
+    ordering: "-created_at",
     page_size: PAGE_SIZE,
   };
   const {
@@ -222,6 +233,25 @@ export function ArticlesClient() {
 
   return (
     <div className="min-h-screen bg-zinc-950">
+      {/* Time Filter */}
+      <div className="border-b border-zinc-800 bg-zinc-950/95 px-4 py-3 lg:px-6">
+        <div className="flex flex-wrap gap-2">
+          {TIME_FILTERS.map((filter) => (
+            <button
+              key={filter.label}
+              onClick={() => setTimeFilter(filter.value)}
+              className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+                timeFilter === filter.value
+                  ? "bg-[#991b1b] text-white"
+                  : "border border-zinc-700 bg-zinc-900 text-zinc-300 hover:bg-zinc-800"
+              }`}
+            >
+              {filter.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* Filter bar */}
       <div className="sticky top-[64px] z-10 border-b border-zinc-800 bg-zinc-950/95 backdrop-blur-sm px-4 py-3 lg:px-6">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">

@@ -7,8 +7,16 @@ export type Author = {
 }
 
 export type AuthorLeaderboardItem = Author & {
-  article_count: number
+  articles_in_period: number
+  total_articles: number
+  article_count?: number  // back-compat alias
   campus_name: string
+  period?: { from: string; to: string }
+}
+
+export type LeaderboardResponse = {
+  period: "all_time" | { from: string; to: string }
+  authors: AuthorLeaderboardItem[]
 }
 
 export type AIFeedback = {

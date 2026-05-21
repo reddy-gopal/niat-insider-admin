@@ -86,9 +86,9 @@ export function useBulkUpdateArticles() {
   });
 }
 
-export function useAuthorLeaderboard() {
+export function useAuthorLeaderboard(fromDate?: string | null, toDate?: string | null) {
   return useQuery({
-    queryKey: ["authors", "leaderboard"],
-    queryFn: getAuthorLeaderboard,
+    queryKey: ["authors", "leaderboard", fromDate, toDate],
+    queryFn: () => getAuthorLeaderboard(fromDate, toDate),
   });
 }
